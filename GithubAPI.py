@@ -1,22 +1,20 @@
 import unittest
-from github import findGithubInfo
+
+from HW4A import get_repo_info
 
 
 class GithubAPI(unittest.TestCase):
-    def testInvalidUsername(self):
-        self.assertEqual(findGithubInfo("jfkdjshfksjdhfkjsdfjsdhfkjsh"), "Invalid username entered. Please re-run the program and try again.")
-    def testValidUsername(self):
-        self.assertTrue(findGithubInfo("nbernhard314").__contains__("Repo: covidhack, Number of commits: 2\nRepo: cs554, Number of commits: 4\nRepo: cs555, Number of commits: 78\n"))
-    def testBoolInput(self):
-        self.assertEqual(findGithubInfo(False), "Invalid input. Please enter a string.")
-    def testIntInput(self):
-        self.assertEqual(findGithubInfo(3), "Invalid input. Please enter a string.")
-    def testFloatInput(self):
-        self.assertEqual(findGithubInfo(12.52), "Invalid input. Please enter a string.")
-    def testNoneInput(self):
-        self.assertEqual(findGithubInfo(None), "Invalid input. Please enter a string.")
+    def test_normal_response(self):
+        expected = ['User: Hennessy45',
+                    'Repo: test1 Number of commits: 3',
+                    'Repo: test2 Number of commits: 2',
+                    'Repo: Triangle567 Number of commits: 1']
+        self.assertEqual(get_repo_info(), expected)
+
+    def test_bad_user_name(self):
+        self.assertEqual(get_repo_info('dhfilahofhaodsjf'), 'unable to fetch repos from user')
+        self.assertEqual(get_repo_info(''), 'unable to fetch repos from user')
 
 
 if __name__ == '__main__':
-    print('Running unit tests')
     unittest.main()
